@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">yuTvGuide</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="show_title">Show Title</string>
+    <string name="show_time">19:00-20:00</string>
+    <string name="lorem">lorem ipsum dolor sit amet</string>
+    <string name="schedule">Jadwal</string>
+    <string name="tab_channel">Saluran</string>
+    <string name="tab_favorite">Favorite</string>
+</resources>
