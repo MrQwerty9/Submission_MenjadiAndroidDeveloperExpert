@@ -11,7 +11,7 @@ import com.sstudio.submission_made.core.data.source.local.entity.FavoriteEntity
 import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 
 @Database(entities = [ChannelEntity::class, ScheduleEntity::class, FavoriteEntity::class],
-    version = 4,
+    version = 6,
     exportSchema = false)
 abstract class TvGuideDatabase : RoomDatabase() {
     abstract fun tvGuideDao(): TvGuideDao
@@ -20,10 +20,10 @@ abstract class TvGuideDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: TvGuideDatabase? = null
 
-        private val MIGRATION_3_4 = object : Migration(3, 4) {
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("DROP TABLE ScheduleEntity")
-                database.execSQL("CREATE TABLE IF NOT EXISTS `ScheduleEntity` (`channelId` INTEGER NOT NULL, `date` TEXT NOT NULL, `time` TEXT NOT NULL, `title` TEXT NOT NULL, PRIMARY KEY(`channelId`, `date`, `time`), FOREIGN KEY(`channelId`) REFERENCES `ChannelEntity`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )")
+                database.execSQL("DROP TABLE FavoriteEntity")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `FavoriteEntity` (`channelId` INTEGER NOT NULL, PRIMARY KEY(`channelId`))")
             }
         }
 
@@ -32,7 +32,7 @@ abstract class TvGuideDatabase : RoomDatabase() {
                 INSTANCE ?: Room.databaseBuilder(context.applicationContext,
                     TvGuideDatabase::class.java,
                     "MovieTvDb.db")
-                    .addMigrations(MIGRATION_3_4)
+                    .addMigrations(MIGRATION_5_6)
                     .build()
             }
     }

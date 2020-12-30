@@ -4,23 +4,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
+import com.sstudio.submission_made.core.domain.model.Channel
+import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
 import com.sstudio.submission_made.vo.Resource
-import com.sstudio.submission_made.core.data.TvGuideRepository
-import com.sstudio.submission_made.core.data.source.local.entity.ChannelEntity
 
-class ChannelViewModel(private val tvGuideRepository: TvGuideRepository) : ViewModel() {
+class ChannelViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel() {
 
-    var listChannel: LiveData<Resource<PagedList<ChannelEntity>>>? = null
+    var listChannel: LiveData<Resource<PagedList<Channel>>>? = null
         get() {
             if (field == null) {
                 field = MutableLiveData()
-                field = tvGuideRepository.getAllChannel(false)
+                field = tvGuideUseCase.getAllChannel(false)
             }
             return field
         }
         private set
 
     fun fetchListMovie(){
-        listChannel = tvGuideRepository.getAllChannel(true)
+        listChannel = tvGuideUseCase.getAllChannel(true)
     }
 }

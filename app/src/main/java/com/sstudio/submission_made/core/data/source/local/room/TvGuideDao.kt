@@ -2,7 +2,10 @@ package com.sstudio.submission_made.core.data.source.local.room
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.sstudio.submission_made.core.data.source.local.entity.*
 
 @Dao
@@ -14,9 +17,8 @@ interface TvGuideDao {
     @Query("SELECT *, * FROM ChannelEntity, FavoriteEntity WHERE id = favoriteEntity.channelId")
     fun getAllFavoriteChannel(): DataSource.Factory<Int, ChannelFavorite>
 
-    @Transaction
-    @Query("SELECT * FROM ChannelEntity WHERE id = :channelId")
-    fun getChannelById(channelId: Int): LiveData<ChannelWithSchedule>
+    @Query("SELECT *, * FROM ChannelEntity, ScheduleEntity WHERE id = :channelId AND date = :date")
+    fun getChannelById(channelId: Int, date: String): LiveData<ChannelWithSchedule>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllChannel(movie: List<ChannelEntity>)
@@ -31,5 +33,5 @@ interface TvGuideDao {
     fun deleteFavorite(id: Int)
 
     @Query("SELECT * FROM FavoriteEntity where channelId = :id")
-    fun getFavoriteById(id: Int): LiveData<List<FavoriteEntity>>
+    fun getFavoriteById(id: Int): LiveData<FavoriteEntity>
 }

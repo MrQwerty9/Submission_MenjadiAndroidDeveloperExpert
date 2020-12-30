@@ -7,7 +7,6 @@ import com.sstudio.submission_made.core.data.TvGuideRepository
 import com.sstudio.submission_made.core.data.source.local.entity.ChannelWithSchedule
 import com.sstudio.submission_made.core.utils.DataDummy
 import com.sstudio.submission_made.vo.Resource
-import junit.framework.TestCase
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule

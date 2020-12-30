@@ -10,14 +10,15 @@ import com.sstudio.submission_made.core.data.source.remote.RemoteDataSource
 import com.sstudio.submission_made.core.data.source.remote.network.ApiResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
+import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
 import com.sstudio.submission_made.core.utils.AppExecutors
 import com.sstudio.submission_made.vo.Resource
 
-class FakeTvGuideRepository constructor(
+class FakeITvGuideRepository constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
-) : TvGuideDataSource {
+) : ITvGuideRepository {
 
     override fun getAllChannel(needFetch: Boolean): LiveData<Resource<PagedList<ChannelEntity>>> {
         return object :
@@ -101,7 +102,7 @@ class FakeTvGuideRepository constructor(
 
     override fun getFavoriteById(channelId: Int): LiveData<List<FavoriteEntity>>  = localDataSource.getFavoriteById(channelId)
 
-    override fun deleteFavoriteTv(channelId: Int) {
+    override fun deleteFavorite(channelId: Int) {
         appExecutors.diskIO().execute{localDataSource.deleteFavoriteTv(channelId)}
     }
 }
