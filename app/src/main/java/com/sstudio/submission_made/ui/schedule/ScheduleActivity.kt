@@ -75,8 +75,8 @@ class ScheduleActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
                     schedule.data?.let {
-                        populateMovie(it.channel)
-                        scheduleAdapter.setListSchedule(it.schedule)
+                        it.channel?.let { it1 -> populateMovie(it1) }
+                        it.schedule?.let { it1 -> scheduleAdapter.setListSchedule(it1) }
 //                        Log.d("mytag", "sche activ ${it}")
                     }
                 }

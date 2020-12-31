@@ -11,7 +11,6 @@ import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
 import com.sstudio.submission_made.core.domain.model.Schedule
 
 object DataMapper {
-
     fun mapChanelResponsesToEntities(input: List<ChannelResponse.Result>): List<ChannelEntity> {
         val channelList = ArrayList<ChannelEntity>()
         input.map {
@@ -34,15 +33,26 @@ object DataMapper {
             )
         }
 
-    fun mapChannelScheduleEntitiesToDomain(input: ChannelWithSchedule?): ChannelWithScheduleModel? {
-        if (input != null) {
-            return ChannelWithScheduleModel(
-                channel = Channel(
+    fun mapChannelEntitiesToDomainList(input: List<ChannelEntity>): List<Channel> =
+        input.map {
+            Channel(
+                id = it.id,
+                channel = it.channel,
+                logoPath = it.logoPath
+            )
+        }
+
+    fun mapChannelScheduleEntitiesToDomain(input: ChannelWithSchedule?): ChannelWithScheduleModel {
+        return ChannelWithScheduleModel(
+            channel = input?.let {
+                Channel(
                     input.channelEntity.id,
                     input.channelEntity.channel,
                     input.channelEntity.logoPath
-                ),
-                schedule = input.scheduleEntity.map {
+                )
+            },
+            schedule = input?.let {
+                input.scheduleEntity.map {
                     Schedule(
                         channelId = it.channelId,
                         date = it.date,
@@ -50,12 +60,12 @@ object DataMapper {
                         title = it.title
                     )
                 }
-            )
-        }
-        return null
+            }
+        )
     }
+
     fun mapChannelFavoriteToDomainPagedList(input: DataSource.Factory<Int, ChannelFavorite>): DataSource.Factory<Int, Channel> =
-        input.map{
+        input.map {
             Channel(
                 id = it.channelEntity.id,
                 channel = it.channelEntity.channel,

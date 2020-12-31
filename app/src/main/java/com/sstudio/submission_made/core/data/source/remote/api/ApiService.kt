@@ -8,11 +8,11 @@ import retrofit2.http.Query
 
 interface ApiService {
     @GET("channel/list")
-    fun getChannels(): Call<ChannelResponse>
+    suspend fun getChannels(): ChannelResponse
 
     @GET("channel/detail")
-    fun getChannelDetail(
+    suspend fun getChannelDetail(
         @Query("id") channelId: Int,
         @Query("date") date: String
-    ): Call<ScheduleResponse>
+    ): ScheduleResponse
 }
