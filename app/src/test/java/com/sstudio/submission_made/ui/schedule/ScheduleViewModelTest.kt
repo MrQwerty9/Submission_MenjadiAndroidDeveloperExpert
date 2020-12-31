@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import com.sstudio.submission_made.core.data.TvGuideRepository
 import com.sstudio.submission_made.core.data.source.local.entity.ChannelWithSchedule
 import com.sstudio.submission_made.core.utils.DataDummy
-import com.sstudio.submission_made.vo.Resource
+import com.sstudio.submission_made.core.data.Resource
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule

@@ -9,8 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sstudio.submission_made.R
+import com.sstudio.submission_made.core.data.Resource
+import com.sstudio.submission_made.core.data.Status
+import com.sstudio.submission_made.core.ui.ChannelAdapter
 import com.sstudio.submission_made.ui.schedule.ScheduleActivity
-import com.sstudio.submission_made.vo.Status
 import kotlinx.android.synthetic.main.fragment_channel.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -51,14 +53,14 @@ class ChannelFragment : Fragment() {
     private fun observeData() {
         viewModel.listChannel?.observe(this, { listMovie ->
             if (listMovie != null) {
-                when (listMovie.status) {
-                    Status.LOADING -> progress_bar.visibility = View.VISIBLE
-                    Status.SUCCESS -> {
+                when (listMovie) {
+                    is Resource.Loading -> progress_bar.visibility = View.VISIBLE
+                    is Resource.Success -> {
                         progress_bar.visibility = View.GONE
                         channelAdapter.submitList(listMovie.data)
                         rv_list_favorite.adapter = channelAdapter //why??
                     }
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         progress_bar.visibility = View.GONE
                         Toast.makeText(context, "Terjadi Kesalahan", Toast.LENGTH_SHORT).show()
                     }

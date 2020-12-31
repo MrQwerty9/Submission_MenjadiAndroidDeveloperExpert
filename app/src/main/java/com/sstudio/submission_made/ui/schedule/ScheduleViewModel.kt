@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
 import com.sstudio.submission_made.core.domain.model.Favorite
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
-import com.sstudio.submission_made.vo.Resource
+import com.sstudio.submission_made.core.data.Resource
 import java.text.SimpleDateFormat
 import java.util.*
 

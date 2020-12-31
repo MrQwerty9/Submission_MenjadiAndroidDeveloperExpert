@@ -9,8 +9,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sstudio.submission_made.BuildConfig
 import com.sstudio.submission_made.R
+import com.sstudio.submission_made.core.BuildConfig.POSTER
+import com.sstudio.submission_made.core.data.Resource
+import com.sstudio.submission_made.core.data.Status
 import com.sstudio.submission_made.core.domain.model.Channel
-import com.sstudio.submission_made.vo.Status
 import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.content_detail_schedule.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -67,9 +69,9 @@ class ScheduleActivity : AppCompatActivity() {
 
     private fun observeData(){
         viewModel.schedule?.observe(this, { schedule ->
-            when (schedule.status) {
-                Status.LOADING -> progress_bar.visibility = View.VISIBLE
-                Status.SUCCESS -> {
+            when (schedule) {
+                is Resource.Loading -> progress_bar.visibility = View.VISIBLE
+                is Resource.Success -> {
                     progress_bar.visibility = View.GONE
                     schedule.data?.let {
                         it.channel?.let { it1 -> populateMovie(it1) }
@@ -77,7 +79,7 @@ class ScheduleActivity : AppCompatActivity() {
 //                        Log.d("mytag", "sche activ ${it}")
                     }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     progress_bar.visibility = View.GONE
                     Toast.makeText(applicationContext, "Terjadi Kesalahan", Toast.LENGTH_SHORT).show()
                 }
