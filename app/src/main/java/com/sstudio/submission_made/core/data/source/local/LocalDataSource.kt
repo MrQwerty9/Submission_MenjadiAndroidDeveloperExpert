@@ -1,19 +1,18 @@
 package com.sstudio.submission_made.core.data.source.local
 
-import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.sstudio.submission_made.core.data.source.local.entity.*
 import com.sstudio.submission_made.core.data.source.local.room.TvGuideDao
 import kotlinx.coroutines.flow.Flow
 
-class LocalDataSource private constructor(private val mGuideDao: TvGuideDao) {
+class LocalDataSource(private val mGuideDao: TvGuideDao) {
 
-    companion object {
-        private var INSTANCE: LocalDataSource? = null
-
-        fun getInstance(tvGuideDao: TvGuideDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(tvGuideDao)
-    }
+//    companion object {
+//        private var INSTANCE: LocalDataSource? = null
+//
+//        fun getInstance(tvGuideDao: TvGuideDao): LocalDataSource =
+//            INSTANCE ?: LocalDataSource(tvGuideDao)
+//    }
 
     fun getAllChannels(): DataSource.Factory<Int, ChannelEntity> = mGuideDao.getAllChannels()
     fun getAllChannelsList(): Flow<List<ChannelEntity>> = mGuideDao.getAllChannelsList()

@@ -5,17 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sstudio.submission_made.R
-import com.sstudio.submission_made.core.ui.ViewModelFactory
 import com.sstudio.submission_made.ui.channel.ChannelAdapter
 import kotlinx.android.synthetic.main.fragment_favorite.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var channelAdapter: ChannelAdapter
-    private lateinit var viewModel: FavoriteViewModel
+    private val viewModel: FavoriteViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favorite, container, false)
@@ -24,8 +23,6 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            viewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
             channelAdapter = ChannelAdapter()
             viewModel.listChannel?.observe(this, { listFavorite ->
                 if (listFavorite != null) {

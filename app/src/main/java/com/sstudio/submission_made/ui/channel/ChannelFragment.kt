@@ -7,18 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sstudio.submission_made.R
-import com.sstudio.submission_made.core.ui.ViewModelFactory
 import com.sstudio.submission_made.ui.schedule.ScheduleActivity
 import com.sstudio.submission_made.vo.Status
 import kotlinx.android.synthetic.main.fragment_channel.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ChannelFragment : Fragment() {
 
     private lateinit var channelAdapter: ChannelAdapter
-    private lateinit var viewModel: ChannelViewModel
+    private val viewModel: ChannelViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_channel, container, false)
@@ -27,8 +26,6 @@ class ChannelFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            viewModel = ViewModelProvider(this, factory)[ChannelViewModel::class.java]
             channelAdapter = ChannelAdapter()
             observeData()
 

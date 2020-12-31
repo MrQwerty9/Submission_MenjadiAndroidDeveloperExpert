@@ -1,12 +1,6 @@
 package com.sstudio.submission_made.core.domain.usecase
 
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import com.sstudio.submission_made.core.domain.model.Channel
-import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
-import com.sstudio.submission_made.core.domain.model.Favorite
 import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
-import com.sstudio.submission_made.vo.Resource
 
 class TvGuideInteractor(private val iTvGuideRepository: ITvGuideRepository): TvGuideUseCase {
     override fun getAllChannel(needFetch: Boolean) = iTvGuideRepository.getAllChannel(needFetch)

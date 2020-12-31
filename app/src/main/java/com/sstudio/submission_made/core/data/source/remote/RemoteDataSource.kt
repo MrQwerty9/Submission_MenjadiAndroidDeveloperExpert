@@ -1,8 +1,6 @@
 package com.sstudio.submission_made.core.data.source.remote
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.sstudio.submission_made.core.data.source.remote.api.ApiService
 import com.sstudio.submission_made.core.data.source.remote.network.ApiResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
@@ -11,21 +9,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class RemoteDataSource private constructor(private val apiService: ApiService) {
+class RemoteDataSource(private val apiService: ApiService) {
 
-    companion object {
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(apiService: ApiService): RemoteDataSource =
-                instance ?: synchronized(this) {
-                    instance ?: RemoteDataSource(apiService)
-                }
-    }
+//    companion object {
+//        @Volatile
+//        private var instance: RemoteDataSource? = null
+//
+//        fun getInstance(apiService: ApiService): RemoteDataSource =
+//                instance ?: synchronized(this) {
+//                    instance ?: RemoteDataSource(apiService)
+//                }
+//    }
 
 
     fun getAllChannel(): Flow<ApiResponse<ChannelResponse>> {

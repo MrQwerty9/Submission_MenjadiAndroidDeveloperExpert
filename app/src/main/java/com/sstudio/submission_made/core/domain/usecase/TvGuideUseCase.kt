@@ -13,6 +13,6 @@ interface TvGuideUseCase {
     fun getAllFavoriteChannel(): Flow<PagedList<Channel>>
 
     fun setFavorite(channelId: Int)
-    fun getFavoriteById(channelId: Int): Flow<Favorite?>
+    fun getFavoriteById(channelId: Int): Flow<Favorite>
     fun deleteFavorite(channelId: Int)
 }

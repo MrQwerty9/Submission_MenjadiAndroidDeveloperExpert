@@ -33,7 +33,7 @@ class ScheduleViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel(
     fun setFavorite(id: Int) =
         tvGuideUseCase.setFavorite(id)
 
-    fun getFavoriteStatus(id: Int): LiveData<Favorite?> =
+    fun getFavoriteStatus(id: Int): LiveData<Favorite> =
         tvGuideUseCase.getFavoriteById(id).asLiveData()
 
     fun deleteFavorite(id: Int){

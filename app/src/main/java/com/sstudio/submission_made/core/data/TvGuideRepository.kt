@@ -1,9 +1,6 @@
 package com.sstudio.submission_made.core.data
 
-import android.util.Log
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.asFlow
-import androidx.lifecycle.map
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sstudio.submission_made.core.data.source.local.LocalDataSource
@@ -21,39 +18,21 @@ import com.sstudio.submission_made.core.utils.AppExecutors
 import com.sstudio.submission_made.core.utils.DataMapper
 import com.sstudio.submission_made.vo.Resource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
-class TvGuideRepository private constructor(
+class TvGuideRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) : ITvGuideRepository {
-
-    companion object {
-        @Volatile
-        private var instance: ITvGuideRepository? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localData: LocalDataSource,
-            appExecutors: AppExecutors
-        ): ITvGuideRepository =
-            instance ?: synchronized(this) {
-                instance ?: TvGuideRepository(remoteData, localData, appExecutors)
-            }
-    }
 
     override fun getAllChannel(needFetch: Boolean): Flow<Resource<PagedList<Channel>>> {
         return object :
             NetworkBoundResource<PagedList<Channel>, ChannelResponse>() {
             override fun loadFromDB(): Flow<PagedList<Channel>> {
 
-                val data = localDataSource.getAllChannels()
-//                Log.d("mytag", "repository ${data.map { it }}")
                 val groupItemFactory =
-                    DataMapper.mapChannelEntitiesToDomain(data)
+                    DataMapper.mapChannelEntitiesToDomain(localDataSource.getAllChannels())
 
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
@@ -91,10 +70,8 @@ class TvGuideRepository private constructor(
                 }
             }
 
-            override fun shouldFetch(data: ChannelWithScheduleModel?): Boolean {
-                Log.d("mytag", "repository data ${data}")
-                return data?.schedule == null || needFetch
-            }
+            override fun shouldFetch(data: ChannelWithScheduleModel?): Boolean =
+                data?.schedule == null || data.schedule?.isEmpty() == true || needFetch
 
             override suspend fun createCall(): Flow<ApiResponse<ScheduleResponse>> =
                 remoteDataSource.getSchedules(channelId, date)
@@ -128,19 +105,17 @@ class TvGuideRepository private constructor(
             .setInitialLoadSizeHint(4)
             .setPageSize(4)
             .build()
-        return flow {
-            LivePagedListBuilder(
+        return LivePagedListBuilder(
                 favoriteEntity, config
-            ).build().map { it }
-        }
+            ).build().asFlow()
     }
 
     override fun setFavorite(channelId: Int) {
         appExecutors.diskIO().execute { localDataSource.insertFavorite(FavoriteEntity(channelId)) }
     }
 
-    override fun getFavoriteById(channelId: Int): Flow<Favorite?> =
-        localDataSource.getFavoriteById(channelId)?.let {
+    override fun getFavoriteById(channelId: Int): Flow<Favorite> =
+        localDataSource.getFavoriteById(channelId).let {
             it.map { favoriteEntity ->
                 Favorite(favoriteEntity?.channelId)
             }
