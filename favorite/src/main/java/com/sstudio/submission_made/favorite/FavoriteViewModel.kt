@@ -1,4 +1,4 @@
-package com.sstudio.submission_made.ui.favorite
+package com.sstudio.submission_made.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.sstudio.submission_made.R
 import com.sstudio.submission_made.core.data.Resource
-import com.sstudio.submission_made.core.data.Status
 import com.sstudio.submission_made.core.ui.ChannelAdapter
 import com.sstudio.submission_made.ui.schedule.ScheduleActivity
 import kotlinx.android.synthetic.main.fragment_channel.*
@@ -37,7 +36,7 @@ class ChannelFragment : Fragment() {
                 swipe_layout.isRefreshing = false
             }
             with(rv_list_favorite) {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = GridLayoutManager(context, 2)
                 setHasFixedSize(true)
 //                adapter = movieAdapter
             }

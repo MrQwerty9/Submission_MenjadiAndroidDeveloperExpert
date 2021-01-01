@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
+import com.sstudio.submission_made.core.data.Resource
 import com.sstudio.submission_made.core.domain.model.Channel
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
-import com.sstudio.submission_made.core.data.Resource
 
 class ChannelViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel() {
 

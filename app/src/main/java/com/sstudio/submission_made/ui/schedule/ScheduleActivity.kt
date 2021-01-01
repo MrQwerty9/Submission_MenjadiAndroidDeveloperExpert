@@ -9,9 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sstudio.submission_made.BuildConfig
 import com.sstudio.submission_made.R
-import com.sstudio.submission_made.core.BuildConfig.POSTER
 import com.sstudio.submission_made.core.data.Resource
-import com.sstudio.submission_made.core.data.Status
 import com.sstudio.submission_made.core.domain.model.Channel
 import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.content_detail_schedule.*

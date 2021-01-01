@@ -2,14 +2,18 @@ package com.sstudio.submission_made
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sstudio.submission_made.ui.channel.ChannelFragment
-import com.sstudio.submission_made.ui.favorite.FavoriteFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    val favoriteFragment: String = "com.sstudio.submission_made.favorite.FavoriteFragment"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,26 +29,37 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener =
         object : BottomNavigationView.OnNavigationItemSelectedListener{
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                val fragment: Fragment
+                val fragment: Fragment?
                 when (item.itemId){
                     R.id.navigation_channel -> {
                         fragment = ChannelFragment()
-                        supportFragmentManager.beginTransaction()
-                            .replace(
-                                R.id.layout_container, fragment, fragment::class.java.simpleName
-                            ).commit()
+                        navigationChange(fragment)
                         return true
                     }
                     R.id.navigation_favorite -> {
-                        fragment = FavoriteFragment()
-                        supportFragmentManager.beginTransaction()
-                            .replace(
-                                R.id.layout_container, fragment, fragment::class.java.simpleName
-                            ).commit()
+                        fragment = instantiateFragment(favoriteFragment)
+                        fragment?.let { navigationChange(it) }
                         return true
                     }
                 }
                 return false
             }
         }
+
+    private fun instantiateFragment(className: String): Fragment? {
+        return try {
+            Class.forName(className).newInstance() as Fragment
+        } catch (e: Exception) {
+            Toast.makeText(this, "Module not found", Toast.LENGTH_SHORT).show()
+            null
+        }
+    }
+
+    private fun navigationChange(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.layout_container, fragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .commit()
+    }
 }
