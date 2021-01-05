@@ -9,6 +9,8 @@ import com.sstudio.submission_made.core.data.source.remote.RemoteDataSource
 import com.sstudio.submission_made.core.data.source.remote.api.ApiService
 import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
 import com.sstudio.submission_made.core.utils.AppExecutors
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -21,10 +23,14 @@ import java.util.concurrent.TimeUnit
 val databaseModule = module {
     factory { get<TvGuideDatabase>().tvGuideDao() }
     single {
+        val passphrase: ByteArray = SQLiteDatabase.getBytes("sstudio".toCharArray())
+        val factory = SupportFactory(passphrase)
         Room.databaseBuilder(
             androidContext(),
             TvGuideDatabase::class.java, "MovieTvDb.db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
+            .build()
     }
 }
 
