@@ -7,6 +7,10 @@ import com.sstudio.submission_made.core.data.source.remote.api.ApiService
 import com.sstudio.submission_made.core.data.source.remote.network.ApiResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,54 +28,42 @@ class RemoteDataSource private constructor(private val apiService: ApiService) {
     }
 
 
-    fun getAllChannel(): LiveData<ApiResponse<ChannelResponse>> {
+    fun getAllChannel(): Flow<ApiResponse<ChannelResponse>> {
 //        EspressoIdlingResource.increment()
-        val resultChannels = MutableLiveData<ApiResponse<ChannelResponse>>()
-        apiService.getChannels()
-            .enqueue(object : Callback<ChannelResponse> {
-            override fun onResponse(
-                call: Call<ChannelResponse>,
-                response: Response<ChannelResponse>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { resultChannels.value = ApiResponse.Success(it) }
+        return flow {
+            try {
+                val response = apiService.getChannels()
+                if (response.result.isNotEmpty()){
+                    emit(ApiResponse.Success(response))
                 } else {
-                    Log.e("RemoteDataSource", "onFailure: ${response.message()}")
+                    emit(ApiResponse.Empty)
                 }
 //                EspressoIdlingResource.decrement()
-            }
-
-            override fun onFailure(call: Call<ChannelResponse>, t: Throwable?) {
-                Log.e("RemoteDataSource", "onFailure: ${t?.message.toString()}")
+            } catch (e : Exception){
+                emit(ApiResponse.Error(e.toString()))
 //                EspressoIdlingResource.decrement()
+                Log.e("RemoteDataSource", e.toString())
             }
-        })
-        return resultChannels
+        }.flowOn(Dispatchers.IO)
     }
 
-    fun getSchedules(idChannel: Int, date: String): LiveData<ApiResponse<ScheduleResponse>> {
+    fun getSchedules(idChannel: Int, date: String): Flow<ApiResponse<ScheduleResponse>> {
 //        EspressoIdlingResource.increment()
-        val resultSchedule = MutableLiveData<ApiResponse<ScheduleResponse>>()
-        apiService.getChannelDetail(idChannel, date)
-            .enqueue(object : Callback<ScheduleResponse> {
-                override fun onResponse(
-                    call: Call<ScheduleResponse>,
-                    response: Response<ScheduleResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        response.body()?.let { resultSchedule.value = ApiResponse.Success(it) }
-                    } else {
-                        Log.e("RemoteDataSource", "onFailure: ${response.message()}")
-                    }
-//                    EspressoIdlingResource.decrement()
+        return flow {
+            try {
+                val response = apiService.getChannelDetail(idChannel, date)
+                if (response.result.isNotEmpty()){
+                    emit(ApiResponse.Success(response))
+                } else {
+                    emit(ApiResponse.Empty)
                 }
-
-                override fun onFailure(call: Call<ScheduleResponse>, t: Throwable?) {
-                    Log.e("RemoteDataSource", "onFailure: ${t?.message.toString()}")
-//                    EspressoIdlingResource.decrement()
-                }
-            })
-        return resultSchedule
+//                EspressoIdlingResource.decrement()
+            } catch (e : Exception){
+                emit(ApiResponse.Error(e.toString()))
+//                EspressoIdlingResource.decrement()
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
     }
 }
 

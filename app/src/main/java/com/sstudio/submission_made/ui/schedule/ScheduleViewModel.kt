@@ -3,39 +3,40 @@ package com.sstudio.submission_made.ui.schedule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
+import com.sstudio.submission_made.core.domain.model.Favorite
+import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
 import com.sstudio.submission_made.vo.Resource
-import com.sstudio.submission_made.core.data.TvGuideRepository
-import com.sstudio.submission_made.core.data.source.local.entity.ChannelWithSchedule
-import com.sstudio.submission_made.core.data.source.local.entity.FavoriteEntity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ScheduleViewModel(private val tvGuideRepository: TvGuideRepository) : ViewModel() {
+class ScheduleViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel() {
 
     var channelId = 0
     private val simpleDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     var date: String = simpleDate.format(Calendar.getInstance().time)
-    var schedule: LiveData<Resource<ChannelWithSchedule>>? = null
+    var schedule: LiveData<Resource<ChannelWithScheduleModel>>? = null
         get() {
             if (field == null) {
                 field = MutableLiveData()
-                field = tvGuideRepository.getSchedule(false, channelId, date)
+                field = tvGuideUseCase.getSchedule(false, channelId, date).asLiveData()
             }
             return field
         }
         private set
 
     fun fetchSchedule(){
-        schedule = tvGuideRepository.getSchedule(true, channelId, date)
+        schedule = tvGuideUseCase.getSchedule(true, channelId, date).asLiveData()
     }
 
     fun setFavorite(id: Int) =
-        tvGuideRepository.setFavorite(id)
+        tvGuideUseCase.setFavorite(id)
 
-    fun getFavoriteStatus(id: Int): LiveData<List<FavoriteEntity>> =
-        tvGuideRepository.getFavoriteById(id)
+    fun getFavoriteStatus(id: Int): LiveData<Favorite?> =
+        tvGuideUseCase.getFavoriteById(id).asLiveData()
 
     fun deleteFavorite(id: Int){
-        tvGuideRepository.deleteFavoriteTv(id)
+        tvGuideUseCase.deleteFavorite(id)
     }
 }

@@ -1,17 +1,16 @@
 package com.sstudio.submission_made.ui.schedule
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sstudio.submission_made.BuildConfig
 import com.sstudio.submission_made.R
-import com.sstudio.submission_made.core.data.source.local.entity.ChannelEntity
+import com.sstudio.submission_made.core.domain.model.Channel
 import com.sstudio.submission_made.core.ui.ViewModelFactory
 import com.sstudio.submission_made.vo.Status
 import kotlinx.android.synthetic.main.activity_schedule.*
@@ -35,12 +34,12 @@ class ScheduleActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ScheduleViewModel::class.java]
         scheduleAdapter = ScheduleAdapter()
-        val extras = intent.getParcelableExtra<ChannelEntity>(EXTRA_SCHEDULE)
+        val extras = intent.getParcelableExtra<Channel>(EXTRA_SCHEDULE)
         if (extras != null) {
             val channelId = extras.id
             if (channelId != 0) {
                 viewModel.getFavoriteStatus(channelId).observe(this, {
-                    isFavorite = it.isNotEmpty()
+                    isFavorite = it != null
                     favoriteOnChange()
                 })
                 viewModel.channelId = channelId
@@ -76,8 +75,8 @@ class ScheduleActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
                     schedule.data?.let {
-                        populateMovie(it.channelEntity)
-                        scheduleAdapter.setListSchedule(it.scheduleEntity)
+                        it.channel?.let { it1 -> populateMovie(it1) }
+                        it.schedule?.let { it1 -> scheduleAdapter.setListSchedule(it1) }
 //                        Log.d("mytag", "sche activ ${it}")
                     }
                 }
@@ -99,7 +98,7 @@ class ScheduleActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateMovie(schedule: ChannelEntity) {
+    private fun populateMovie(schedule: Channel) {
 //        appbar.title = schedule.channelEntity.channel
         Glide.with(this)
             .load(BuildConfig.POSTER + schedule.logoPath)

@@ -10,20 +10,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sstudio.submission_made.BuildConfig
 import com.sstudio.submission_made.R
-import com.sstudio.submission_made.core.data.source.local.entity.ChannelEntity
+import com.sstudio.submission_made.core.domain.model.Channel
 import kotlinx.android.synthetic.main.item_channel.view.*
 
-class ChannelAdapter : PagedListAdapter<ChannelEntity, ChannelAdapter.ViewHolder>(DIFF_CALLBACK) {
+class ChannelAdapter : PagedListAdapter<Channel, ChannelAdapter.ViewHolder>(DIFF_CALLBACK) {
 
-    var onItemClick: ((ChannelEntity) -> Unit)? = null
+    var onItemClick: ((Channel) -> Unit)? = null
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChannelEntity>() {
-            override fun areItemsTheSame(oldItem: ChannelEntity, newItem: ChannelEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Channel>() {
+            override fun areItemsTheSame(oldItem: Channel, newItem: Channel): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ChannelEntity, newItem: ChannelEntity): Boolean {
+            override fun areContentsTheSame(oldItem: Channel, newItem: Channel): Boolean {
                 return oldItem == newItem
             }
         }
@@ -40,7 +40,7 @@ class ChannelAdapter : PagedListAdapter<ChannelEntity, ChannelAdapter.ViewHolder
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(channel: ChannelEntity) {
+        fun bind(channel: Channel) {
             with(itemView) {
                 Glide.with(itemView.context)
                     .load(BuildConfig.POSTER + channel.logoPath)

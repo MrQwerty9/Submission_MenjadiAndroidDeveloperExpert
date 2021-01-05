@@ -10,14 +10,15 @@ import com.sstudio.submission_made.core.data.source.remote.RemoteDataSource
 import com.sstudio.submission_made.core.data.source.remote.network.ApiResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
+import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
 import com.sstudio.submission_made.core.utils.AppExecutors
 import com.sstudio.submission_made.vo.Resource
 
-class FakeTvGuideRepository constructor(
+class FakeITvGuideRepository constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
-) : TvGuideDataSource {
+) : ITvGuideRepository {
 
     override fun getAllChannel(needFetch: Boolean): LiveData<Resource<PagedList<ChannelEntity>>> {
         return object :
@@ -34,10 +35,10 @@ class FakeTvGuideRepository constructor(
             override fun shouldFetch(data: PagedList<ChannelEntity>?): Boolean =
                 data == null || data.isEmpty() || needFetch
 
-            override fun createCall(): LiveData<ApiResponse<ChannelResponse>> =
+            override suspend fun createCall(): LiveData<ApiResponse<ChannelResponse>> =
                 remoteDataSource.getAllChannel()
 
-            override fun saveCallResult(data: ChannelResponse) {
+            override suspend fun saveCallResult(data: ChannelResponse) {
                 val channelList = ArrayList<ChannelEntity>()
                 for (response in data.result) {
                     val movie = ChannelEntity(
@@ -49,7 +50,7 @@ class FakeTvGuideRepository constructor(
                 }
                 localDataSource.insertAllChannel(channelList)
             }
-        }.asLiveData()
+        }.asFlow()
     }
 
     override fun getSchedule(
@@ -64,10 +65,10 @@ class FakeTvGuideRepository constructor(
             override fun shouldFetch(data: ChannelWithSchedule?): Boolean =
                 data == null || needFetch
 
-            override fun createCall(): LiveData<ApiResponse<ScheduleResponse>> =
+            override suspend fun createCall(): LiveData<ApiResponse<ScheduleResponse>> =
                 remoteDataSource.getSchedules(channelId, date)
 
-            override fun saveCallResult(data: ScheduleResponse) {
+            override suspend fun saveCallResult(data: ScheduleResponse) {
                 for (response in data.result) {
                     for (showTimes in response.showTimes) {
                         localDataSource.insertSchedule(
@@ -83,7 +84,7 @@ class FakeTvGuideRepository constructor(
                     Log.d("mytag", "repository $response")
                 }
             }
-        }.asLiveData()
+        }.asFlow()
     }
 
     override fun getAllFavoriteChannel(): LiveData<PagedList<ChannelFavorite>> {
@@ -101,7 +102,7 @@ class FakeTvGuideRepository constructor(
 
     override fun getFavoriteById(channelId: Int): LiveData<List<FavoriteEntity>>  = localDataSource.getFavoriteById(channelId)
 
-    override fun deleteFavoriteTv(channelId: Int) {
+    override fun deleteFavorite(channelId: Int) {
         appExecutors.diskIO().execute{localDataSource.deleteFavoriteTv(channelId)}
     }
 }

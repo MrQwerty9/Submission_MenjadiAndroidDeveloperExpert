@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.sstudio.submission_made.core.data.source.local.entity.*
 import com.sstudio.submission_made.core.data.source.local.room.TvGuideDao
+import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource private constructor(private val mGuideDao: TvGuideDao) {
 
@@ -15,13 +16,14 @@ class LocalDataSource private constructor(private val mGuideDao: TvGuideDao) {
     }
 
     fun getAllChannels(): DataSource.Factory<Int, ChannelEntity> = mGuideDao.getAllChannels()
+    fun getAllChannelsList(): Flow<List<ChannelEntity>> = mGuideDao.getAllChannelsList()
     fun getAllFavoriteChannel(): DataSource.Factory<Int, ChannelFavorite> = mGuideDao.getAllFavoriteChannel()
-    fun getChannelWithScheduleById(id: Int): LiveData<ChannelWithSchedule> = mGuideDao.getChannelById(id)
+    fun getChannelWithScheduleById(id: Int, date: String): Flow<ChannelWithSchedule?> = mGuideDao.getChannelById(id, date)
 
-    fun insertAllChannel(channel: List<ChannelEntity>) = mGuideDao.insertAllChannel(channel)
-    fun insertSchedule(schedule: ScheduleEntity) = mGuideDao.insertSchedule(schedule)
+    suspend fun insertAllChannel(channel: List<ChannelEntity>) = mGuideDao.insertAllChannel(channel)
+    suspend fun insertSchedule(schedule: ScheduleEntity) = mGuideDao.insertSchedule(schedule)
 
     fun insertFavorite(favorite: FavoriteEntity) = mGuideDao.insertFavorite(favorite)
     fun deleteFavoriteTv(id: Int) = mGuideDao.deleteFavorite(id)
-    fun getFavoriteById(id: Int): LiveData<List<FavoriteEntity>> = mGuideDao.getFavoriteById(id)
+    fun getFavoriteById(id: Int): Flow<FavoriteEntity?> = mGuideDao.getFavoriteById(id)
 }
