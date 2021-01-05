@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sstudio.submission_made.BuildConfig
 import com.sstudio.submission_made.R
+import com.sstudio.submission_made.core.data.Resource
 import com.sstudio.submission_made.core.domain.model.Channel
-import com.sstudio.submission_made.core.ui.ViewModelFactory
-import com.sstudio.submission_made.vo.Status
 import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.content_detail_schedule.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ScheduleActivity : AppCompatActivity() {
     companion object {
@@ -23,7 +22,7 @@ class ScheduleActivity : AppCompatActivity() {
 
     var isFavorite: Boolean? = null
     private lateinit var scheduleAdapter: ScheduleAdapter
-    private lateinit var viewModel: ScheduleViewModel
+    private val viewModel: ScheduleViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,15 +30,13 @@ class ScheduleActivity : AppCompatActivity() {
 
         supportActionBar?.elevation = 0f
 
-        val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[ScheduleViewModel::class.java]
         scheduleAdapter = ScheduleAdapter()
         val extras = intent.getParcelableExtra<Channel>(EXTRA_SCHEDULE)
         if (extras != null) {
             val channelId = extras.id
             if (channelId != 0) {
                 viewModel.getFavoriteStatus(channelId).observe(this, {
-                    isFavorite = it != null
+                    isFavorite = it?.channelId != null
                     favoriteOnChange()
                 })
                 viewModel.channelId = channelId
@@ -70,9 +67,9 @@ class ScheduleActivity : AppCompatActivity() {
 
     private fun observeData(){
         viewModel.schedule?.observe(this, { schedule ->
-            when (schedule.status) {
-                Status.LOADING -> progress_bar.visibility = View.VISIBLE
-                Status.SUCCESS -> {
+            when (schedule) {
+                is Resource.Loading -> progress_bar.visibility = View.VISIBLE
+                is Resource.Success -> {
                     progress_bar.visibility = View.GONE
                     schedule.data?.let {
                         it.channel?.let { it1 -> populateMovie(it1) }
@@ -80,7 +77,7 @@ class ScheduleActivity : AppCompatActivity() {
 //                        Log.d("mytag", "sche activ ${it}")
                     }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     progress_bar.visibility = View.GONE
                     Toast.makeText(applicationContext, "Terjadi Kesalahan", Toast.LENGTH_SHORT).show()
                 }

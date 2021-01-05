@@ -7,4 +7,5 @@
     <string name="schedule">Jadwal</string>
     <string name="tab_channel">Saluran</string>
     <string name="tab_favorite">Favorite</string>
+    <string name="title_favorite">Favorite</string>
 </resources>
