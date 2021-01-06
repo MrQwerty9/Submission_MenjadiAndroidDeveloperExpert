@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 apply from: '../shared_dependencies.gradle'
 
@@ -46,6 +48,7 @@ android {
 
 dependencies {
     implementation project(":core")
+    implementation 'com.google.firebase:firebase-analytics:18.0.0'
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 

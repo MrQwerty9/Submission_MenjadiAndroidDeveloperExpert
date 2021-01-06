@@ -9,7 +9,7 @@ import com.sstudio.submission_made.core.domain.model.Schedule
 import kotlinx.android.synthetic.main.item_schedule.view.*
 import java.util.*
 
-class ScheduleAdapter() : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
+class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
 
     private val listSchedule = ArrayList<Schedule>()
 

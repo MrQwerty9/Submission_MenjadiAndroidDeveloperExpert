@@ -20,7 +20,7 @@ class ScheduleActivity : AppCompatActivity() {
         const val EXTRA_SCHEDULE = "extra_schedule"
     }
 
-    var isFavorite: Boolean? = null
+    private var isFavorite: Boolean? = null
     private lateinit var scheduleAdapter: ScheduleAdapter
     private val viewModel: ScheduleViewModel by viewModel()
 
@@ -74,7 +74,6 @@ class ScheduleActivity : AppCompatActivity() {
                     schedule.data?.let {
                         it.channel?.let { it1 -> populateMovie(it1) }
                         it.schedule?.let { it1 -> scheduleAdapter.setListSchedule(it1) }
-//                        Log.d("mytag", "sche activ ${it}")
                     }
                 }
                 is Resource.Error -> {

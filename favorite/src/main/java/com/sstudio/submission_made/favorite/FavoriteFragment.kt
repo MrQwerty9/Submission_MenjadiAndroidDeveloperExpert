@@ -49,6 +49,9 @@ class FavoriteFragment : Fragment() {
                 intent.putExtra(ScheduleActivity.EXTRA_SCHEDULE, selectedData)
                 startActivity(intent)
             }
+            btn_crash.setOnClickListener {
+                throw RuntimeException("Test Crash")
+            }
         }
     }
 }
