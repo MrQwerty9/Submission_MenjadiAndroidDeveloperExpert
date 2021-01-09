@@ -39,7 +39,6 @@ class ChannelFragment : Fragment() {
             with(rv_list_favorite) {
                 layoutManager = GridLayoutManager(context, 2)
                 setHasFixedSize(true)
-//                adapter = movieAdapter
             }
         }
 
@@ -51,7 +50,7 @@ class ChannelFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.listChannel?.observe(this, { listMovie ->
+        viewModel.listChannel?.observe(viewLifecycleOwner, { listMovie ->
             if (listMovie != null) {
                 when (listMovie) {
                     is Resource.Loading -> progress_bar.visibility = View.VISIBLE

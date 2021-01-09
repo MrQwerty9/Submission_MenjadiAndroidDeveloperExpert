@@ -98,7 +98,6 @@ class ScheduleActivity : AppCompatActivity() {
     }
 
     private fun populateMovie(schedule: Channel) {
-//        appbar.title = schedule.channelEntity.channel
         Glide.with(this)
             .load(BuildConfig.POSTER + schedule.logoPath)
             .apply(

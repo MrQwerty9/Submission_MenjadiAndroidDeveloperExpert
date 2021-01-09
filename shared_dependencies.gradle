@@ -42,7 +42,9 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
     api "androidx.navigation:navigation-dynamic-features-fragment:$navigation_version"
 
-    //Firebase Crashlytics
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+    // Crashlytics
     implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'
     implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
 }

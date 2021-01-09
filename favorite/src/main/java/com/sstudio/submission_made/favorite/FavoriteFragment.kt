@@ -45,7 +45,6 @@ class FavoriteFragment : Fragment() {
             with(rv_list_favorite) {
                 layoutManager = GridLayoutManager(context, 2)
                 setHasFixedSize(true)
-//                adapter = movieAdapter
             }
             channelAdapter.onItemClick = { selectedData ->
                 val intent = Intent(activity, ScheduleActivity::class.java)

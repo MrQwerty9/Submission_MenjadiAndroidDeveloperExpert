@@ -7,13 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource(private val mGuideDao: TvGuideDao) {
 
-//    companion object {
-//        private var INSTANCE: LocalDataSource? = null
-//
-//        fun getInstance(tvGuideDao: TvGuideDao): LocalDataSource =
-//            INSTANCE ?: LocalDataSource(tvGuideDao)
-//    }
-
     fun getAllChannels(): DataSource.Factory<Int, ChannelEntity> = mGuideDao.getAllChannels()
     fun getAllFavoriteChannel(): DataSource.Factory<Int, ChannelFavorite> = mGuideDao.getAllFavoriteChannel()
     fun getChannelWithScheduleById(id: Int, date: String): Flow<ChannelWithSchedule?> = mGuideDao.getChannelById(id, date)
