@@ -28,10 +28,13 @@ class ScheduleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
 
-        supportActionBar?.elevation = 0f
-
-        scheduleAdapter = ScheduleAdapter()
         val extras = intent.getParcelableExtra<Channel>(EXTRA_SCHEDULE)
+        appbar.title = extras?.channel
+        setSupportActionBar(appbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.elevation = 0f
+        scheduleAdapter = ScheduleAdapter()
+
         if (extras != null) {
             val channelId = extras.id
             if (channelId != 0) {
