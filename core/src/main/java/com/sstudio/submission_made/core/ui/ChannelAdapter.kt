@@ -49,7 +49,7 @@ class ChannelAdapter : PagedListAdapter<Channel, ChannelAdapter.ViewHolder>(DIFF
                             .error(R.drawable.ic_error)
                     )
                     .into(img_poster)
-                itemView.setOnClickListener {
+                setOnClickListener {
                     onItemClick?.invoke(channel)
                 }
             }
