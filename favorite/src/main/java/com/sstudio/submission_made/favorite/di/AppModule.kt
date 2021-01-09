@@ -6,10 +6,6 @@ import com.sstudio.submission_made.favorite.FavoriteViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val useCaseModule = module {
-    factory<TvGuideUseCase> { TvGuideInteractor(get()) }
-}
-
 val viewModelModule = module {
     viewModel { FavoriteViewModel(get()) }
 }

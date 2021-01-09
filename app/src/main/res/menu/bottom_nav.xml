@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_channel"
+        android:id="@+id/fragment_channel"
         android:icon="@drawable/ic_live_tv_blue"
         android:title="@string/tab_channel" />
 
     <item
-        android:id="@+id/navigation_favorite"
+        android:id="@+id/fragment_favorite"
         android:icon="@drawable/ic_favorite_border_blue"
         android:title="@string/tab_favorite" />
 

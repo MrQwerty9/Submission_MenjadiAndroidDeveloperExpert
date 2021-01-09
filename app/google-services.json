@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "791600236609",
+    "project_id": "submission-made",
+    "storage_bucket": "submission-made.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791600236609:android:53730d0c2fdcce09c19ec0",
+        "android_client_info": {
+          "package_name": "com.sstudio.submission_made"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791600236609-3kvp6t1qbtfvpv8hlbfp7a5fn7r2fhgp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK0-kFooLMFpLWUVSowmzeTHJ4krGS6H4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791600236609-3kvp6t1qbtfvpv8hlbfp7a5fn7r2fhgp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

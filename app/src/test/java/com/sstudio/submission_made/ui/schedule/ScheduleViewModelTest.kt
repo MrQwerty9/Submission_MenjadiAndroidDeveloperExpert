@@ -4,12 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asFlow
-import com.sstudio.submission_made.core.utils.DataDummy
 import com.sstudio.submission_made.core.data.Resource
 import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
+import com.sstudio.submission_made.core.utils.DataDummy
 import com.sstudio.submission_made.core.utils.DataMapper
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

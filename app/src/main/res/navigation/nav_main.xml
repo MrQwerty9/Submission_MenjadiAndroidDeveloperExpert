@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/fragment_channel">
+    <fragment
+        android:id="@+id/fragment_channel"
+        android:name="com.sstudio.submission_made.ui.channel.ChannelFragment">
+        <action
+            android:id="@+id/action_goto_favorite"
+            app:destination="@+id/fragment_favorite" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_favorite"
+        android:name="com.sstudio.submission_made.favorite.FavoriteFragment">
+
+        <deepLink app:uri="myApp://fragmentB" />
+    </fragment>
+</navigation>

@@ -20,7 +20,7 @@ class ScheduleActivity : AppCompatActivity() {
         const val EXTRA_SCHEDULE = "extra_schedule"
     }
 
-    var isFavorite: Boolean? = null
+    private var isFavorite: Boolean? = null
     private lateinit var scheduleAdapter: ScheduleAdapter
     private val viewModel: ScheduleViewModel by viewModel()
 
@@ -28,10 +28,13 @@ class ScheduleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
 
-        supportActionBar?.elevation = 0f
-
-        scheduleAdapter = ScheduleAdapter()
         val extras = intent.getParcelableExtra<Channel>(EXTRA_SCHEDULE)
+        appbar.title = extras?.channel
+        setSupportActionBar(appbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.elevation = 0f
+        scheduleAdapter = ScheduleAdapter()
+
         if (extras != null) {
             val channelId = extras.id
             if (channelId != 0) {
@@ -74,7 +77,6 @@ class ScheduleActivity : AppCompatActivity() {
                     schedule.data?.let {
                         it.channel?.let { it1 -> populateMovie(it1) }
                         it.schedule?.let { it1 -> scheduleAdapter.setListSchedule(it1) }
-//                        Log.d("mytag", "sche activ ${it}")
                     }
                 }
                 is Resource.Error -> {
@@ -96,7 +98,6 @@ class ScheduleActivity : AppCompatActivity() {
     }
 
     private fun populateMovie(schedule: Channel) {
-//        appbar.title = schedule.channelEntity.channel
         Glide.with(this)
             .load(BuildConfig.POSTER + schedule.logoPath)
             .apply(

@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sstudio.submission_made.core.ui.ChannelAdapter
 import com.sstudio.submission_made.favorite.di.viewModelModule
@@ -26,9 +28,10 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            loadKoinModules(viewModelModule)
+            toolbar.title = context?.getString(R.string.tab_favorite)
+                loadKoinModules(viewModelModule)
             channelAdapter = ChannelAdapter()
-            viewModel.listChannel?.observe(this, { listFavorite ->
+            viewModel.listChannel?.observe(viewLifecycleOwner, { listFavorite ->
                 if (listFavorite != null) {
                     channelAdapter.submitList(listFavorite)
                     rv_list_favorite.adapter = channelAdapter //why??
@@ -42,12 +45,14 @@ class FavoriteFragment : Fragment() {
             with(rv_list_favorite) {
                 layoutManager = GridLayoutManager(context, 2)
                 setHasFixedSize(true)
-//                adapter = movieAdapter
             }
             channelAdapter.onItemClick = { selectedData ->
                 val intent = Intent(activity, ScheduleActivity::class.java)
                 intent.putExtra(ScheduleActivity.EXTRA_SCHEDULE, selectedData)
                 startActivity(intent)
+            }
+            btn_crash.setOnClickListener {
+                throw RuntimeException("Test Crash")
             }
         }
     }
