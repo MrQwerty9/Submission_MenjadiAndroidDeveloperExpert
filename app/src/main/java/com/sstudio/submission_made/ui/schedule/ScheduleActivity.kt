@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sstudio.submission_made.BuildConfig
+import com.sstudio.submission_made.MyApplication
 import com.sstudio.submission_made.R
 import com.sstudio.submission_made.core.domain.model.Channel
 import com.sstudio.submission_made.core.ui.ViewModelFactory
 import com.sstudio.submission_made.vo.Status
 import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.content_detail_schedule.*
+import javax.inject.Inject
 
 class ScheduleActivity : AppCompatActivity() {
     companion object {
@@ -24,16 +26,19 @@ class ScheduleActivity : AppCompatActivity() {
 
     var isFavorite: Boolean? = null
     private lateinit var scheduleAdapter: ScheduleAdapter
-    private lateinit var viewModel: ScheduleViewModel
+    @Inject
+    lateinit var factory: ViewModelFactory
+    private val viewModel: ScheduleViewModel by viewModels {
+        factory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
 
         supportActionBar?.elevation = 0f
 
-        val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[ScheduleViewModel::class.java]
         scheduleAdapter = ScheduleAdapter()
         val extras = intent.getParcelableExtra<Channel>(EXTRA_SCHEDULE)
         if (extras != null) {

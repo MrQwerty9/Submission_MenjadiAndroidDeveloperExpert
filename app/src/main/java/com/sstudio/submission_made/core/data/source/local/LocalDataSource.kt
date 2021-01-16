@@ -6,15 +6,11 @@ import com.sstudio.submission_made.core.data.source.local.entity.ChannelFavorite
 import com.sstudio.submission_made.core.data.source.local.entity.FavoriteEntity
 import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 import com.sstudio.submission_made.core.data.source.local.room.TvGuideDao
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LocalDataSource private constructor(private val mGuideDao: TvGuideDao) {
-
-    companion object {
-        private var INSTANCE: LocalDataSource? = null
-
-        fun getInstance(tvGuideDao: TvGuideDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(tvGuideDao)
-    }
+@Singleton
+class LocalDataSource @Inject constructor(private val mGuideDao: TvGuideDao) {
 
     fun getAllChannels(): DataSource.Factory<Int, ChannelEntity> = mGuideDao.getAllChannels()
     fun getAllFavoriteChannel(): DataSource.Factory<Int, ChannelFavorite> = mGuideDao.getAllFavoriteChannel()

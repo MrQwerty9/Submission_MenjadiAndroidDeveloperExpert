@@ -7,8 +7,9 @@ import com.sstudio.submission_made.core.domain.model.Favorite
 import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
 import com.sstudio.submission_made.vo.Resource
 import io.reactivex.Flowable
+import javax.inject.Inject
 
-class TvGuideInteractor(private val iTvGuideRepository: ITvGuideRepository): TvGuideUseCase {
+class TvGuideInteractor @Inject constructor(private val iTvGuideRepository: ITvGuideRepository): TvGuideUseCase {
     override fun getAllChannel(needFetch: Boolean): Flowable<Resource<PagedList<Channel>>> =
         iTvGuideRepository.getAllChannel(needFetch)
 

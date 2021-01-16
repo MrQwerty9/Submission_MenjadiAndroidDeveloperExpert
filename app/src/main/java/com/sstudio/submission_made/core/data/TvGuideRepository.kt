@@ -19,26 +19,15 @@ import com.sstudio.submission_made.vo.Resource
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class TvGuideRepository private constructor(
+@Singleton
+class TvGuideRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) : ITvGuideRepository {
-
-    companion object {
-        @Volatile
-        private var instance: ITvGuideRepository? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localData: LocalDataSource,
-            appExecutors: AppExecutors
-        ): ITvGuideRepository =
-            instance ?: synchronized(this) {
-                instance ?: TvGuideRepository(remoteData, localData, appExecutors)
-            }
-    }
 
     override fun getAllChannel(needFetch: Boolean): Flowable<Resource<PagedList<Channel>>> {
         return object :

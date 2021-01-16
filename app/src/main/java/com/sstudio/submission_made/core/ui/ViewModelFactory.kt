@@ -1,25 +1,16 @@
 package com.sstudio.submission_made.core.ui
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sstudio.submission_made.core.di.Injection
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
+import com.sstudio.submission_made.di.AppScope
 import com.sstudio.submission_made.ui.channel.ChannelViewModel
 import com.sstudio.submission_made.ui.favorite.FavoriteViewModel
 import com.sstudio.submission_made.ui.schedule.ScheduleViewModel
+import javax.inject.Inject
 
-class ViewModelFactory private constructor(private val tvGuideUseCase: TvGuideUseCase) : ViewModelProvider.NewInstanceFactory() {
-
-    companion object {
-        @Volatile
-        private var instance: ViewModelFactory? = null
-
-        fun getInstance(context: Context): ViewModelFactory =
-                instance ?: synchronized(this) {
-                    instance ?: ViewModelFactory(Injection.provideTvGuideUseCase(context))
-                }
-    }
+@AppScope
+class ViewModelFactory @Inject constructor(private val tvGuideUseCase: TvGuideUseCase) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
