@@ -3,6 +3,7 @@ package com.sstudio.submission_made.ui.channel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.toLiveData
 import androidx.paging.PagedList
 import com.sstudio.submission_made.core.domain.model.Channel
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
@@ -14,13 +15,13 @@ class ChannelViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel()
         get() {
             if (field == null) {
                 field = MutableLiveData()
-                field = tvGuideUseCase.getAllChannel(false)
+                field = tvGuideUseCase.getAllChannel(false).toLiveData()
             }
             return field
         }
         private set
 
     fun fetchListMovie(){
-        listChannel = tvGuideUseCase.getAllChannel(true)
+        listChannel = tvGuideUseCase.getAllChannel(true).toLiveData()
     }
 }

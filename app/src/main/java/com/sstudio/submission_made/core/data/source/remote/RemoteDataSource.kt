@@ -1,15 +1,16 @@
 package com.sstudio.submission_made.core.data.source.remote
 
+import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.sstudio.submission_made.core.data.source.remote.api.ApiService
 import com.sstudio.submission_made.core.data.source.remote.network.ApiResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 class RemoteDataSource private constructor(private val apiService: ApiService) {
 
@@ -23,55 +24,38 @@ class RemoteDataSource private constructor(private val apiService: ApiService) {
                 }
     }
 
-
-    fun getAllChannel(): LiveData<ApiResponse<ChannelResponse>> {
+    @SuppressLint("CheckResult")
+    fun getAllChannel(): Flowable<ApiResponse<ChannelResponse>> {
+        val resultData = PublishSubject.create<ApiResponse<ChannelResponse>>()
 //        EspressoIdlingResource.increment()
-        val resultChannels = MutableLiveData<ApiResponse<ChannelResponse>>()
         apiService.getChannels()
-            .enqueue(object : Callback<ChannelResponse> {
-            override fun onResponse(
-                call: Call<ChannelResponse>,
-                response: Response<ChannelResponse>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { resultChannels.value = ApiResponse.Success(it) }
-                } else {
-                    Log.e("RemoteDataSource", "onFailure: ${response.message()}")
-                }
-//                EspressoIdlingResource.decrement()
-            }
-
-            override fun onFailure(call: Call<ChannelResponse>, t: Throwable?) {
-                Log.e("RemoteDataSource", "onFailure: ${t?.message.toString()}")
-//                EspressoIdlingResource.decrement()
-            }
-        })
-        return resultChannels
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                resultData.onNext(if (response.result.isNotEmpty()) ApiResponse.Success(response) else ApiResponse.Empty)
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
+            })
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 
-    fun getSchedules(idChannel: Int, date: String): LiveData<ApiResponse<ScheduleResponse>> {
+    @SuppressLint("CheckResult")
+    fun getSchedules(idChannel: Int, date: String): Flowable<ApiResponse<ScheduleResponse>> {
 //        EspressoIdlingResource.increment()
-        val resultSchedule = MutableLiveData<ApiResponse<ScheduleResponse>>()
+        val resultSchedule = PublishSubject.create<ApiResponse<ScheduleResponse>>()
         apiService.getChannelDetail(idChannel, date)
-            .enqueue(object : Callback<ScheduleResponse> {
-                override fun onResponse(
-                    call: Call<ScheduleResponse>,
-                    response: Response<ScheduleResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        response.body()?.let { resultSchedule.value = ApiResponse.Success(it) }
-                    } else {
-                        Log.e("RemoteDataSource", "onFailure: ${response.message()}")
-                    }
-//                    EspressoIdlingResource.decrement()
-                }
-
-                override fun onFailure(call: Call<ScheduleResponse>, t: Throwable?) {
-                    Log.e("RemoteDataSource", "onFailure: ${t?.message.toString()}")
-//                    EspressoIdlingResource.decrement()
-                }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe ({ response ->
+                resultSchedule.onNext(if (response.result.isNotEmpty()) ApiResponse.Success(response) else ApiResponse.Empty)
+            }, { error ->
+                resultSchedule.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
             })
-        return resultSchedule
+        return resultSchedule.toFlowable(BackpressureStrategy.BUFFER)
     }
 }
 

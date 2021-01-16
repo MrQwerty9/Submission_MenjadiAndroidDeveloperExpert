@@ -34,25 +34,22 @@ object DataMapper {
             )
         }
 
-    fun mapChannelScheduleEntitiesToDomain(input: ChannelWithSchedule?): ChannelWithScheduleModel? {
-        if (input != null) {
-            return ChannelWithScheduleModel(
-                channel = Channel(
-                    input.channelEntity.id,
-                    input.channelEntity.channel,
-                    input.channelEntity.logoPath
-                ),
-                schedule = input.scheduleEntity.map {
-                    Schedule(
-                        channelId = it.channelId,
-                        date = it.date,
-                        time = it.time,
-                        title = it.title
-                    )
-                }
-            )
-        }
-        return null
+    fun mapChannelScheduleEntitiesToDomain(input: ChannelWithSchedule): ChannelWithScheduleModel {
+        return ChannelWithScheduleModel(
+            channel = Channel(
+                input.channelEntity.id,
+                input.channelEntity.channel,
+                input.channelEntity.logoPath
+            ),
+            schedule = input.scheduleEntity.map {
+                Schedule(
+                    channelId = it.channelId,
+                    date = it.date,
+                    time = it.time,
+                    title = it.title
+                )
+            }
+        )
     }
     fun mapChannelFavoriteToDomainPagedList(input: DataSource.Factory<Int, ChannelFavorite>): DataSource.Factory<Int, Channel> =
         input.map{

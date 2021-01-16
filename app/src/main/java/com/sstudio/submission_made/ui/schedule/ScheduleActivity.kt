@@ -1,6 +1,7 @@
 package com.sstudio.submission_made.ui.schedule
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +40,7 @@ class ScheduleActivity : AppCompatActivity() {
             val channelId = extras.id
             if (channelId != 0) {
                 viewModel.getFavoriteStatus(channelId).observe(this, {
-                    isFavorite = it != null
+                    isFavorite = it.isNotEmpty()
                     favoriteOnChange()
                 })
                 viewModel.channelId = channelId
@@ -57,6 +58,7 @@ class ScheduleActivity : AppCompatActivity() {
                     } else {
                         viewModel.setFavorite(channelId)
                     }
+                    Log.d("mytag", "fav ${isFavorite}")
                     favoriteOnChange()
                 }
             }
@@ -75,9 +77,10 @@ class ScheduleActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
                     schedule.data?.let {
-                        populateMovie(it.channel)
-                        scheduleAdapter.setListSchedule(it.schedule)
-//                        Log.d("mytag", "sche activ ${it}")
+                        if (it.isNotEmpty()) {
+                            populateMovie(it.first().channel)
+                            scheduleAdapter.setListSchedule(it.first().schedule)
+                        }
                     }
                 }
                 Status.ERROR -> {
