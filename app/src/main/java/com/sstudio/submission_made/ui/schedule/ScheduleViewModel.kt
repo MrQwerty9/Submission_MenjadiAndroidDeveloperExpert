@@ -10,8 +10,9 @@ import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
 import com.sstudio.submission_made.vo.Resource
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class ScheduleViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel() {
+class ScheduleViewModel @Inject constructor(private val tvGuideUseCase: TvGuideUseCase) : ViewModel() {
 
     var channelId = 0
     private val simpleDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

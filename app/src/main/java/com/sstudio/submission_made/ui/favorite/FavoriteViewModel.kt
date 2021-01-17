@@ -7,8 +7,9 @@ import androidx.lifecycle.toLiveData
 import androidx.paging.PagedList
 import com.sstudio.submission_made.core.domain.model.Channel
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
+import javax.inject.Inject
 
-class FavoriteViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel() {
+class FavoriteViewModel @Inject constructor(private val tvGuideUseCase: TvGuideUseCase) : ViewModel() {
 
     var listChannel: LiveData<PagedList<Channel>>? = null
         get() {

@@ -1,4 +1,4 @@
-package com.sstudio.submission_made.core.di
+package com.sstudio.submission_made.di
 
 import com.sstudio.submission_made.core.domain.usecase.TvGuideInteractor
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
