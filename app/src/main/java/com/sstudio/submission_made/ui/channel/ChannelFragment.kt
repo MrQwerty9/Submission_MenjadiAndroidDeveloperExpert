@@ -38,7 +38,7 @@ class ChannelFragment : Fragment() {
             }
             with(rv_list_favorite) {
                 layoutManager = GridLayoutManager(context, 2)
-                setHasFixedSize(true)
+//                setHasFixedSize(true)
             }
         }
 

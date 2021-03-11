@@ -17,7 +17,8 @@ class ScheduleViewModel(private val tvGuideUseCase: TvGuideUseCase) : ViewModel(
     private var simpleDate: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("id", "ID")).also {
         it.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
     }
-    var date: String = simpleDate.format(Calendar.getInstance().time)
+//    var date: String = simpleDate.format(Calendar.getInstance().time)
+    var date = "2021-01-05"
 
     var schedule: LiveData<Resource<ChannelWithScheduleModel>>? = null
         get() {

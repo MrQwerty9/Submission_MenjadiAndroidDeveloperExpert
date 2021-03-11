@@ -23,11 +23,11 @@ dependencies {
     implementation "com.android.support.test.espresso:espresso-idling-resource:$espressoVersion"
     androidTestImplementation "androidx.test:rules:$androidXTestVersion"
     androidTestImplementation "androidx.test:runner:$runnerVersion"
-    androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation "androidx.arch.core:core-testing:$androidCoreTestVersion"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     implementation "androidx.test.espresso:espresso-idling-resource:$idleResourceVersion"
 
     //koin
@@ -40,11 +40,11 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    api "androidx.navigation:navigation-dynamic-features-fragment:$navigation_version"
+    api "androidx.navigation:navigation-dynamic-features-fragment:2.3.4"
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
     // Crashlytics
     implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
 }
