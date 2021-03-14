@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Schedule(
+    val id: Int,
     val channelId: Int,
     val date: String,
     val time: String,

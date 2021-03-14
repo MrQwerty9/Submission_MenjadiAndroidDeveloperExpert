@@ -30,7 +30,7 @@ val databaseModule = module {
             androidContext(),
             TvGuideDatabase::class.java, "TvSchedule.db"
         ).fallbackToDestructiveMigration()
-            .openHelperFactory(factory)
+//            .openHelperFactory(factory)
             .build()
     }
 }

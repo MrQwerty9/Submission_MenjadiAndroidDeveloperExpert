@@ -1,11 +1,11 @@
 package com.sstudio.submission_made.core.data
 
+import android.util.Log
 import androidx.lifecycle.asFlow
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sstudio.submission_made.core.data.source.local.LocalDataSource
 import com.sstudio.submission_made.core.data.source.local.entity.FavoriteEntity
-import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 import com.sstudio.submission_made.core.data.source.remote.RemoteDataSource
 import com.sstudio.submission_made.core.data.source.remote.network.ApiResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
@@ -64,8 +64,8 @@ class TvGuideRepository(
     ): Flow<Resource<ChannelWithScheduleModel>> {
         return object : NetworkBoundResource<ChannelWithScheduleModel, ScheduleResponse>() {
             override fun loadFromDB(): Flow<ChannelWithScheduleModel> {
-
                 return localDataSource.getChannelWithScheduleById(channelId, date).map {
+                    Log.d("mytag", "$date $channelId $it")
                     DataMapper.mapChannelScheduleEntitiesToDomain(it)
                 }
             }
@@ -77,21 +77,10 @@ class TvGuideRepository(
                 remoteDataSource.getSchedules(channelId, date)
 
             override suspend fun saveCallResult(data: ScheduleResponse) {
-                for (response in data.result) {
-                    val showTimesSort = response.showTimes.sortedBy {
-                        it.time
-                    }
-                    for (showTimes in showTimesSort) {
-                        localDataSource.insertSchedule(
-                            ScheduleEntity(
-                                response.channelId,
-                                response.date,
-                                showTimes.time,
-                                showTimes.title
-                            )
-                        )
-                    }
-                }
+
+                    localDataSource.insertSchedule(
+                        DataMapper.mapScheduleResponseToEntity(data)
+                    )
             }
         }.asFlow()
     }

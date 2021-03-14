@@ -9,10 +9,10 @@ class LocalDataSource(private val mGuideDao: TvGuideDao) {
 
     fun getAllChannels(): DataSource.Factory<Int, ChannelEntity> = mGuideDao.getAllChannels()
     fun getAllFavoriteChannel(): DataSource.Factory<Int, ChannelFavorite> = mGuideDao.getAllFavoriteChannel()
-    fun getChannelWithScheduleById(id: Int, date: String): Flow<ChannelWithSchedule?> = mGuideDao.getChannelById(id, date)
+    fun getChannelWithScheduleById(id: Int, date: String): Flow<ChannelWithSchedule?> = mGuideDao.getChannelById(id)
 
     suspend fun insertAllChannel(channel: List<ChannelEntity>) = mGuideDao.insertAllChannel(channel)
-    suspend fun insertSchedule(schedule: ScheduleEntity) = mGuideDao.insertSchedule(schedule)
+    suspend fun insertSchedule(schedule: List<ScheduleEntity>) = mGuideDao.insertSchedule(schedule)
 
     fun insertFavorite(favorite: FavoriteEntity) = mGuideDao.insertFavorite(favorite)
     fun deleteFavoriteTv(id: Int) = mGuideDao.deleteFavorite(id)

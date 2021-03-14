@@ -6,6 +6,7 @@ import com.sstudio.submission_made.core.data.source.local.entity.ChannelFavorite
 import com.sstudio.submission_made.core.data.source.local.entity.ChannelWithSchedule
 import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
+import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
 import com.sstudio.submission_made.core.domain.model.Channel
 import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
 import com.sstudio.submission_made.core.domain.model.Schedule
@@ -54,6 +55,7 @@ object DataMapper {
             schedule = input?.let {
                 input.scheduleEntity.map {
                     Schedule(
+                        id = it.scheduleId,
                         channelId = it.channelId,
                         date = it.date,
                         time = it.time,
@@ -79,9 +81,21 @@ object DataMapper {
         logoPath = input.logoPath
     )
 
+    fun mapScheduleResponseToEntity(input: ScheduleResponse) =
+        input.result.map {
+            ScheduleEntity(
+                it.id,
+                it.channelId,
+                it.date,
+                it.time,
+                it.title
+            )
+        }
+
     fun mapScheduleEntitiesToDomain(input: List<ScheduleEntity>): List<Schedule> =
         input.map {
             Schedule(
+                id = it.scheduleId,
                 channelId = it.channelId,
                 date = it.date,
                 time = it.time,
@@ -90,6 +104,7 @@ object DataMapper {
         }
 
     fun mapScheduleDomainToEntity(input: Schedule) = ScheduleEntity(
+        scheduleId = input.id,
         channelId = input.channelId,
         date = input.date,
         time = input.time,

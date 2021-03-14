@@ -4,6 +4,7 @@ import com.sstudio.submission_made.core.domain.usecase.TvGuideInteractor
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
 import com.sstudio.submission_made.ui.channel.ChannelViewModel
 import com.sstudio.submission_made.ui.schedule.ScheduleViewModel
+import com.sstudio.submission_made.ui.schedule.content.ScheduleContentViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -14,4 +15,5 @@ val useCaseModule = module {
 val viewModelModule = module {
     viewModel { ChannelViewModel(get()) }
     viewModel { ScheduleViewModel(get()) }
+    viewModel { ScheduleContentViewModel(get()) }
 }

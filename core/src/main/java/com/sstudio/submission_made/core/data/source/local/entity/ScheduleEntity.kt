@@ -1,14 +1,16 @@
 package com.sstudio.submission_made.core.data.source.local.entity
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 
 @Entity(
-    primaryKeys = ["channelId", "date", "time"],
-    foreignKeys = [ForeignKey(entity = ChannelEntity::class,
+    primaryKeys = ["scheduleId", "channelId", "date"],
+    foreignKeys = [androidx.room.ForeignKey(
+        entity = ChannelEntity::class,
         parentColumns = ["id"],
-        childColumns = ["channelId"])])
+        childColumns = ["channelId"]
+    )])
 data class ScheduleEntity(
+    val scheduleId: Int,
     val channelId: Int,
     val date: String,
     val time: String,
