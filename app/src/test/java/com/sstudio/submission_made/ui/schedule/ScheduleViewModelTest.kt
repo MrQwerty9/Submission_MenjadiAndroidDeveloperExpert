@@ -6,9 +6,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.asFlow
 import com.sstudio.submission_made.core.data.Resource
 import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
+import com.sstudio.submission_made.core.domain.model.Schedule
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
 import com.sstudio.submission_made.core.utils.DataDummy
 import com.sstudio.submission_made.core.utils.DataMapper
+import com.sstudio.submission_made.ui.schedule.content.ScheduleContentViewModel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,7 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class ScheduleViewModelTest {
-    private lateinit var viewModel: ScheduleViewModel
+    private lateinit var viewModel: ScheduleContentViewModel
     private val dummyChannel = DataDummy.generateDummyChannel()[0]
     private val channelId = dummyChannel.id
     private val date = "2021-01-05"
@@ -36,21 +38,21 @@ class ScheduleViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ScheduleViewModel(tvGuideUseCase)
+        viewModel = ScheduleContentViewModel(tvGuideUseCase)
         viewModel.channelId = channelId
         viewModel.date = date
     }
 
     @Test
     fun testGetSchedule() {
-        val dataDummy = DataDummy.generateDummyChannelWithSchedule(channelId, date)
-        val dummyChannelWithSchedule = Resource.Success(DataMapper.mapChannelScheduleEntitiesToDomain(dataDummy))
-        val course = MutableLiveData<Resource<ChannelWithScheduleModel>>()
-        course.value = dummyChannelWithSchedule
-        print(course.asFlow().toString())
+        val dataDummy = DataDummy.generateDummySchedule(channelId, date)
+        val dummyChannelWithSchedule = Resource.Success(DataMapper.mapScheduleEntitiesToDomain(dataDummy))
+        val scheduleData = MutableLiveData<Resource<List<Schedule>>>()
+        scheduleData.value = dummyChannelWithSchedule
+        print(scheduleData.asFlow().toString())
 
-        Mockito.`when`(tvGuideUseCase.getSchedule(false, channelId, date)).thenReturn(course.asFlow())
-        val schedule = viewModel.schedule?.value?.data
+        Mockito.`when`(tvGuideUseCase.getSchedule(false, channelId, date)).thenReturn(scheduleData.asFlow())
+        val schedule = viewModel.schedule.value?.data
         Mockito.verify(tvGuideUseCase).getSchedule(false, channelId, date)
 //        Assert.assertNotNull(schedule)
 //        Assert.assertEquals(2, schedule?.schedule?.size)

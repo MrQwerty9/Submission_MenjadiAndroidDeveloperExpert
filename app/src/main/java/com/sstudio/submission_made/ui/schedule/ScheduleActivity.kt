@@ -56,8 +56,11 @@ class ScheduleActivity : AppCompatActivity() {
 //                observeData()
 //            }
 
-            val adapter = SchedulePagerAdapter(supportFragmentManager)
-            view_pager_schedule.adapter = adapter
+            val pagerAdapter = SchedulePagerAdapter(supportFragmentManager)
+            with(view_pager_schedule) {
+//                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout_schedule))
+                adapter = pagerAdapter
+            }
 
             tab_layout_schedule.setupWithViewPager(view_pager_schedule)
 

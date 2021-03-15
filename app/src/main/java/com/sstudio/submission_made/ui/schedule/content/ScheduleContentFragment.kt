@@ -13,6 +13,8 @@ import com.sstudio.submission_made.ui.schedule.ScheduleActivity
 import com.sstudio.submission_made.ui.schedule.ScheduleAdapter
 import kotlinx.android.synthetic.main.fragment_schedule_content.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ScheduleContentFragment : Fragment() {
 
@@ -32,7 +34,7 @@ class ScheduleContentFragment : Fragment() {
         position = arguments?.getInt(BUNDLE_POS)
 
         viewModel.channelId = ScheduleActivity.channelId
-        viewModel.positionDay = position ?: 0
+        viewModel.positionDay.value = position ?: 0
         observeData()
 
         with(rv_cast) {
@@ -41,17 +43,17 @@ class ScheduleContentFragment : Fragment() {
             adapter = scheduleAdapter
         }
 
-        tv_schedule_date.text = position.toString()
+        tv_schedule_date.text = getDateName()
     }
 
-    private fun observeData(){
-        viewModel.schedule?.observe(viewLifecycleOwner, { schedule ->
+    private fun observeData() {
+        viewModel.schedule.observe(viewLifecycleOwner, { schedule ->
             when (schedule) {
                 is Resource.Loading -> progress_bar.visibility = View.VISIBLE
                 is Resource.Success -> {
                     progress_bar.visibility = View.GONE
                     schedule.data?.let {
-                        it.schedule?.let { it1 -> scheduleAdapter.setListSchedule(it1) }
+                        it.let { it1 -> scheduleAdapter.setListSchedule(it1) }
                     }
                 }
                 is Resource.Error -> {
@@ -75,4 +77,9 @@ class ScheduleContentFragment : Fragment() {
         }
     }
 
+    private fun getDateName(): String {
+        val cal: Calendar = Calendar.getInstance()
+        cal.add(Calendar.DATE, position ?: 0)
+        return SimpleDateFormat("EEEE dd/MMM/yyyy", Locale("id", "ID")).format(cal.time)
+    }
 }

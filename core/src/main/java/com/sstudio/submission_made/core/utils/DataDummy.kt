@@ -1,7 +1,6 @@
 package com.sstudio.submission_made.core.utils
 
 import com.sstudio.submission_made.core.data.source.local.entity.ChannelEntity
-import com.sstudio.submission_made.core.data.source.local.entity.ChannelWithSchedule
 import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
@@ -35,11 +34,11 @@ object DataDummy {
         return schedules
     }
 //
-    fun generateDummyChannelWithSchedule(channelId: Int, date: String): ChannelWithSchedule {
-        val channel = generateDummyChannel()[0]
-        val schedule = generateDummySchedule(channelId, date)
-        return ChannelWithSchedule(channel, schedule)
-    }
+//    fun generateDummyChannelWithSchedule(channelId: Int, date: String): ChannelWithSchedule {
+//        val channel = generateDummyChannel()[0]
+//        val schedule = generateDummySchedule(channelId, date)
+//        return ChannelWithSchedule(channel, schedule)
+//    }
 
     fun generateRemoteDummyChannel(): List<ChannelResponse.Result> {
         val channel = ArrayList<ChannelResponse.Result>()

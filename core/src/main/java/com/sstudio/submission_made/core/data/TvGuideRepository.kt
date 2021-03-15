@@ -11,8 +11,8 @@ import com.sstudio.submission_made.core.data.source.remote.network.ApiResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
 import com.sstudio.submission_made.core.domain.model.Channel
-import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
 import com.sstudio.submission_made.core.domain.model.Favorite
+import com.sstudio.submission_made.core.domain.model.Schedule
 import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
 import com.sstudio.submission_made.core.utils.AppExecutors
 import com.sstudio.submission_made.core.utils.DataMapper
@@ -61,17 +61,17 @@ class TvGuideRepository(
         needFetch: Boolean,
         channelId: Int,
         date: String
-    ): Flow<Resource<ChannelWithScheduleModel>> {
-        return object : NetworkBoundResource<ChannelWithScheduleModel, ScheduleResponse>() {
-            override fun loadFromDB(): Flow<ChannelWithScheduleModel> {
+    ): Flow<Resource<List<Schedule>>> {
+        return object : NetworkBoundResource<List<Schedule>, ScheduleResponse>() {
+            override fun loadFromDB(): Flow<List<Schedule>> {
                 return localDataSource.getChannelWithScheduleById(channelId, date).map {
                     Log.d("mytag", "$date $channelId $it")
-                    DataMapper.mapChannelScheduleEntitiesToDomain(it)
+                    DataMapper.mapScheduleEntitiesToDomain(it)
                 }
             }
 
-            override fun shouldFetch(data: ChannelWithScheduleModel?): Boolean =
-                data?.schedule == null || data.schedule?.isEmpty() == true || needFetch
+            override fun shouldFetch(data: List<Schedule>?): Boolean =
+                data == null || data.isEmpty() || needFetch
 
             override suspend fun createCall(): Flow<ApiResponse<ScheduleResponse>> =
                 remoteDataSource.getSchedules(channelId, date)

@@ -3,12 +3,10 @@ package com.sstudio.submission_made.core.utils
 import androidx.paging.DataSource
 import com.sstudio.submission_made.core.data.source.local.entity.ChannelEntity
 import com.sstudio.submission_made.core.data.source.local.entity.ChannelFavorite
-import com.sstudio.submission_made.core.data.source.local.entity.ChannelWithSchedule
 import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
 import com.sstudio.submission_made.core.domain.model.Channel
-import com.sstudio.submission_made.core.domain.model.ChannelWithScheduleModel
 import com.sstudio.submission_made.core.domain.model.Schedule
 
 object DataMapper {
@@ -43,28 +41,28 @@ object DataMapper {
             )
         }
 
-    fun mapChannelScheduleEntitiesToDomain(input: ChannelWithSchedule?): ChannelWithScheduleModel {
-        return ChannelWithScheduleModel(
-            channel = input?.let {
-                Channel(
-                    input.channelEntity.id,
-                    input.channelEntity.channel,
-                    input.channelEntity.logoPath
-                )
-            },
-            schedule = input?.let {
-                input.scheduleEntity.map {
-                    Schedule(
-                        id = it.scheduleId,
-                        channelId = it.channelId,
-                        date = it.date,
-                        time = it.time,
-                        title = it.title
-                    )
-                }
-            }
-        )
-    }
+//    fun mapChannelScheduleEntitiesToDomain(input: ChannelWithSchedule?): ChannelWithScheduleModel {
+//        return ChannelWithScheduleModel(
+//            channel = input?.let {
+//                Channel(
+//                    input.channelEntity.id,
+//                    input.channelEntity.channel,
+//                    input.channelEntity.logoPath
+//                )
+//            },
+//            schedule = input?.let {
+//                input.scheduleEntity.map {
+//                    Schedule(
+//                        id = it.scheduleId,
+//                        channelId = it.channelId,
+//                        date = it.date,
+//                        time = it.time,
+//                        title = it.title
+//                    )
+//                }
+//            }
+//        )
+//    }
 
     fun mapChannelFavoriteToDomainPagedList(input: DataSource.Factory<Int, ChannelFavorite>): DataSource.Factory<Int, Channel> =
         input.map {
