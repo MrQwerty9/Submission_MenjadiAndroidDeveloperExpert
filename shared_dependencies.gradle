@@ -29,7 +29,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$androidCoreTestVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     implementation "androidx.test.espresso:espresso-idling-resource:$idleResourceVersion"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2-native-mt"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_coroutines_version"
 
     //koin
     implementation "org.koin:koin-core:$koin_version"
