@@ -86,7 +86,8 @@ object DataMapper {
                 it.channelId,
                 it.date,
                 it.time,
-                it.title
+                it.title,
+                false
             )
         }
 
@@ -106,6 +107,7 @@ object DataMapper {
         channelId = input.channelId,
         date = input.date,
         time = input.time,
-        title = input.title
+        title = input.title,
+        reminder = false
     )
 }
