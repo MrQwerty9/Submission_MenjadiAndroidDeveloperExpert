@@ -1,11 +1,11 @@
 package com.sstudio.submission_made.core.data.source.local.room
 
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.sstudio.submission_made.core.data.source.local.entity.*
+import androidx.room.*
+import com.sstudio.submission_made.core.data.source.local.entity.ChannelEntity
+import com.sstudio.submission_made.core.data.source.local.entity.ChannelFavorite
+import com.sstudio.submission_made.core.data.source.local.entity.FavoriteEntity
+import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,17 +17,18 @@ interface TvGuideDao {
     @Query("SELECT * FROM ChannelEntity")
     fun getAllChannelsList():  Flow<List<ChannelEntity>>
 
-    @Query("SELECT *, * FROM ChannelEntity, FavoriteEntity WHERE id = favoriteEntity.channelId")
+    @Transaction
+    @Query("SELECT *, * FROM ChannelEntity, FavoriteEntity WHERE ChannelEntity.id = favoriteEntity.channelId")
     fun getAllFavoriteChannel(): DataSource.Factory<Int, ChannelFavorite>
 
-    @Query("SELECT *, * FROM ChannelEntity, ScheduleEntity WHERE id = :channelId AND date = :date")
-    fun getChannelById(channelId: Int, date: String): Flow<ChannelWithSchedule?>
+    @Query("SELECT ScheduleEntity.* FROM ScheduleEntity WHERE ScheduleEntity.channelId = :channelId AND ScheduleEntity.date = :date")
+    fun getSchedule(channelId: Int, date: String): Flow<List<ScheduleEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllChannel(movie: List<ChannelEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSchedule(data: ScheduleEntity)
+    suspend fun insertSchedule(data: List<ScheduleEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavorite(favorite: FavoriteEntity)

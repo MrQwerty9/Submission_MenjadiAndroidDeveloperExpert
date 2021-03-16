@@ -28,16 +28,16 @@ val databaseModule = module {
         val factory = SupportFactory(passphrase)
         Room.databaseBuilder(
             androidContext(),
-            TvGuideDatabase::class.java, "MovieTvDb.db"
+            TvGuideDatabase::class.java, "TvSchedule.db"
         ).fallbackToDestructiveMigration()
-            .openHelperFactory(factory)
+//            .openHelperFactory(factory)
             .build()
     }
 }
 
 val networkModule = module {
     single {
-        val hostname = "tourism-api.dicoding.dev"
+        val hostname = "tv-guide-api.herokuapp.com"
         val certificatePinner = CertificatePinner.Builder()
             .add(hostname, "sha256/Vuy2zjFSPqF5Hz18k88DpUViKGbABaF3vZx5Raghplc=")
             .add(hostname, "sha256/k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws=")

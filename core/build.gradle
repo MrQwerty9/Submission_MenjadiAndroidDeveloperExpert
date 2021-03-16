@@ -15,7 +15,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "BASE_URL", "\"https://tv-guide-api.herokuapp.com/api/\""
+        buildConfigField "String", "BASE_URL", "\"https://tv-guide-api.herokuapp.com/api/v2/\""
         buildConfigField "String", "POSTER", "\"https://tv-guide-api.herokuapp.com/public/logo/\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

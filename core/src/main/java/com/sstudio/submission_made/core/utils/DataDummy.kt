@@ -1,7 +1,6 @@
 package com.sstudio.submission_made.core.utils
 
 import com.sstudio.submission_made.core.data.source.local.entity.ChannelEntity
-import com.sstudio.submission_made.core.data.source.local.entity.ChannelWithSchedule
 import com.sstudio.submission_made.core.data.source.local.entity.ScheduleEntity
 import com.sstudio.submission_made.core.data.source.remote.response.ChannelResponse
 import com.sstudio.submission_made.core.data.source.remote.response.ScheduleResponse
@@ -27,19 +26,19 @@ object DataDummy {
     fun generateDummySchedule(channelId: Int, date: String): List<ScheduleEntity> {
         val schedules = ArrayList<ScheduleEntity>()
         schedules.add(
-            ScheduleEntity(channelId, date, "19:00", "Fast and Forious")
+            ScheduleEntity(0, channelId, date, "19:00", "Fast and Forious")
         )
         schedules.add(
-            ScheduleEntity(channelId, date, "19:00", "Need For")
+            ScheduleEntity(1, channelId, date, "19:00", "Need For")
         )
         return schedules
     }
 //
-    fun generateDummyChannelWithSchedule(channelId: Int, date: String): ChannelWithSchedule {
-        val channel = generateDummyChannel()[0]
-        val schedule = generateDummySchedule(channelId, date)
-        return ChannelWithSchedule(channel, schedule)
-    }
+//    fun generateDummyChannelWithSchedule(channelId: Int, date: String): ChannelWithSchedule {
+//        val channel = generateDummyChannel()[0]
+//        val schedule = generateDummySchedule(channelId, date)
+//        return ChannelWithSchedule(channel, schedule)
+//    }
 
     fun generateRemoteDummyChannel(): List<ChannelResponse.Result> {
         val channel = ArrayList<ChannelResponse.Result>()
@@ -54,16 +53,11 @@ object DataDummy {
 
     fun generateRemoteDummySchedule(channelId: Int, date: String): List<ScheduleResponse.Result> {
         val schedule = ArrayList<ScheduleResponse.Result>()
-        val showTimes = ArrayList<ScheduleResponse.Result.ShowTimes>()
-        showTimes.add(
-            ScheduleResponse.Result.ShowTimes("19:00", "Fast and Forious")
-        )
-        showTimes.add(
-            ScheduleResponse.Result.ShowTimes("19:00", "Need For")
-        )
-
         schedule.add(
-            ScheduleResponse.Result(showTimes, date, channelId)
+            ScheduleResponse.Result(0, channelId, date, "19:00:00", "Fast and Forious")
+        )
+        schedule.add(
+            ScheduleResponse.Result(0, channelId, date, "21:00:00", "Need For speed")
         )
         return schedule
     }

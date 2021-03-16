@@ -38,13 +38,13 @@ class ChannelFragment : Fragment() {
             }
             with(rv_list_favorite) {
                 layoutManager = GridLayoutManager(context, 2)
-                setHasFixedSize(true)
+//                setHasFixedSize(true)
             }
         }
 
         channelAdapter.onItemClick = { selectedData ->
             val intent = Intent(activity, ScheduleActivity::class.java)
-            intent.putExtra(ScheduleActivity.EXTRA_SCHEDULE, selectedData)
+            intent.putExtra(ScheduleActivity.EXTRA_CHANNEL, selectedData)
             startActivity(intent)
         }
     }
