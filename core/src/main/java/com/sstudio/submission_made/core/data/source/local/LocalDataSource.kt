@@ -16,6 +16,7 @@ class LocalDataSource(private val mGuideDao: TvGuideDao) {
 
     suspend fun insertAllChannel(channel: List<ChannelEntity>) = mGuideDao.insertAllChannel(channel)
     suspend fun insertSchedule(schedule: List<ScheduleEntity>) = mGuideDao.insertSchedule(schedule)
+    suspend fun updateSchedule(schedule: ScheduleEntity) = mGuideDao.updateSchedule(schedule)
 
     fun insertFavorite(favorite: FavoriteEntity) = mGuideDao.insertFavorite(favorite)
     fun deleteFavoriteTv(id: Int) = mGuideDao.deleteFavorite(id)

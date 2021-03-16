@@ -9,5 +9,6 @@ data class ScheduleEntity(
     val channelId: Int,
     val date: String,
     val time: String,
-    val title: String
+    val title: String,
+    val reminder: Boolean
 )

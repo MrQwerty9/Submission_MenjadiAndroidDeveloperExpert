@@ -26,10 +26,10 @@ object DataDummy {
     fun generateDummySchedule(channelId: Int, date: String): List<ScheduleEntity> {
         val schedules = ArrayList<ScheduleEntity>()
         schedules.add(
-            ScheduleEntity(0, channelId, date, "19:00", "Fast and Forious")
+            ScheduleEntity(0, channelId, date, "19:00", "Fast and Forious", false)
         )
         schedules.add(
-            ScheduleEntity(1, channelId, date, "19:00", "Need For")
+            ScheduleEntity(1, channelId, date, "19:00", "Need For", false)
         )
         return schedules
     }

@@ -30,6 +30,9 @@ interface TvGuideDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSchedule(data: List<ScheduleEntity>)
 
+    @Update
+    suspend fun updateSchedule(schedule: ScheduleEntity)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavorite(favorite: FavoriteEntity)
 
@@ -38,4 +41,5 @@ interface TvGuideDao {
 
     @Query("SELECT * FROM FavoriteEntity where channelId = :id")
     fun getFavoriteById(id: Int): Flow<FavoriteEntity?>
+
 }
