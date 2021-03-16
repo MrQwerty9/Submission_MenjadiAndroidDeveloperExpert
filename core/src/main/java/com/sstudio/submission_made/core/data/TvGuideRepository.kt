@@ -1,5 +1,6 @@
 package com.sstudio.submission_made.core.data
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.asFlow
 import androidx.paging.LivePagedListBuilder
@@ -16,13 +17,15 @@ import com.sstudio.submission_made.core.domain.model.Schedule
 import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
 import com.sstudio.submission_made.core.utils.AppExecutors
 import com.sstudio.submission_made.core.utils.DataMapper
+import com.sstudio.submission_made.core.utils.ReminderReceiver
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class TvGuideRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val appExecutors: AppExecutors
+    private val appExecutors: AppExecutors,
+    private val context: Context
 ) : ITvGuideRepository {
 
     override fun getAllChannel(needFetch: Boolean): Flow<Resource<PagedList<Channel>>> {
@@ -112,6 +115,16 @@ class TvGuideRepository(
 
     override fun deleteFavorite(channelId: Int) {
         appExecutors.diskIO().execute { localDataSource.deleteFavoriteTv(channelId) }
+    }
+
+    override fun setReminder(schedule: Schedule) {
+        val entity = DataMapper.mapScheduleDomainToEntity(schedule)
+        entity.reminder = !entity.reminder
+        appExecutors.diskIO().execute { localDataSource.updateSchedule(entity) }
+
+        val reminderReceiver = ReminderReceiver()
+//        reminderReceiver.setOneTimeAlarm(context, schedule.id, schedule.date, schedule.time, schedule.title)
+        reminderReceiver.setOneTimeAlarm(context, schedule.id, "2021-03-17", "00:36", schedule.title)
     }
 }
 

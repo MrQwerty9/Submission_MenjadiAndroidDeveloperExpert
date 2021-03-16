@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.sstudio.submission_made.core.domain.model.Schedule
 import com.sstudio.submission_made.core.domain.usecase.TvGuideUseCase
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,6 +27,10 @@ class ScheduleContentViewModel(private val tvGuideUseCase: TvGuideUseCase) : Vie
         val date: String = simpleDate.format(cal.time)
 
         tvGuideUseCase.getSchedule(false, channelId, date).asLiveData()
+    }
+
+    fun setReminder(schedule: Schedule){
+        tvGuideUseCase.setReminder(schedule)
     }
 //
 //    fun fetchSchedule(){

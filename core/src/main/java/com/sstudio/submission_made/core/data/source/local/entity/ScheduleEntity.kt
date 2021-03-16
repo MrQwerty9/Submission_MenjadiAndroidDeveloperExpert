@@ -10,5 +10,5 @@ data class ScheduleEntity(
     val date: String,
     val time: String,
     val title: String,
-    val reminder: Boolean
+    var reminder: Boolean
 )

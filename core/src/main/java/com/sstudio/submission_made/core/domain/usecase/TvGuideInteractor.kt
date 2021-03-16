@@ -1,5 +1,6 @@
 package com.sstudio.submission_made.core.domain.usecase
 
+import com.sstudio.submission_made.core.domain.model.Schedule
 import com.sstudio.submission_made.core.domain.repository.ITvGuideRepository
 
 class TvGuideInteractor(private val iTvGuideRepository: ITvGuideRepository): TvGuideUseCase {
@@ -22,5 +23,9 @@ class TvGuideInteractor(private val iTvGuideRepository: ITvGuideRepository): TvG
 
     override fun deleteFavorite(channelId: Int) {
         iTvGuideRepository.deleteFavorite(channelId)
+    }
+
+    override fun setReminder(schedule: Schedule) {
+        iTvGuideRepository.setReminder(schedule)
     }
 }

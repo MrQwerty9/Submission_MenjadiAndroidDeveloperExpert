@@ -31,7 +31,7 @@ interface TvGuideDao {
     suspend fun insertSchedule(data: List<ScheduleEntity>)
 
     @Update
-    suspend fun updateSchedule(schedule: ScheduleEntity)
+    fun updateSchedule(schedule: ScheduleEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavorite(favorite: FavoriteEntity)
