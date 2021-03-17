@@ -90,4 +90,12 @@ class ReminderReceiver : BroadcastReceiver() {
         val notification = builder.build()
         notificationManagerCompat.notify(notifId, notification)
     }
+
+    fun cancelAlarm(context: Context, requestCode: Int) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, ReminderReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0)
+        pendingIntent.cancel()
+        alarmManager.cancel(pendingIntent)
+    }
 }

@@ -123,8 +123,11 @@ class TvGuideRepository(
         appExecutors.diskIO().execute { localDataSource.updateSchedule(entity) }
 
         val reminderReceiver = ReminderReceiver()
-//        reminderReceiver.setOneTimeAlarm(context, schedule.id, schedule.date, schedule.time, schedule.title)
-        reminderReceiver.setOneTimeAlarm(context, schedule.id, "2021-03-17", "00:36", schedule.title)
+        if (entity.reminder)
+            reminderReceiver.setOneTimeAlarm(context, schedule.id, schedule.date, schedule.time, schedule.title)
+        else
+            reminderReceiver.cancelAlarm(context, schedule.id)
+//        reminderReceiver.setOneTimeAlarm(context, schedule.id, "2021-03-17", "00:36", schedule.title)
     }
 }
 
