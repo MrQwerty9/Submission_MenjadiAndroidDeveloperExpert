@@ -15,4 +15,5 @@ interface TvGuideUseCase {
     fun setFavorite(channelId: Int)
     fun getFavoriteById(channelId: Int): Flow<Favorite>
     fun deleteFavorite(channelId: Int)
+    fun setReminder(schedule: Schedule)
 }

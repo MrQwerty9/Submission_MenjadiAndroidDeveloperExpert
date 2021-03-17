@@ -12,6 +12,7 @@ import java.util.*
 class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
 
     private val listSchedule = ArrayList<Schedule>()
+    var onItemClick: ((Schedule) -> Unit)? = null
 
     fun setListSchedule(schedule: List<Schedule>){
         this.listSchedule.clear()
@@ -32,10 +33,17 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(channel: Schedule) {
+        fun bind(schedule: Schedule) {
             with(itemView) {
-                tv_item_title.text = channel.title
-                tv_item_time.text = channel.time
+                tv_item_title.text = schedule.title
+                tv_item_time.text = schedule.time
+                if (schedule.reminder)
+                    btn_notification.setImageResource(R.drawable.ic_notifications_active)
+                else
+                    btn_notification.setImageResource(R.drawable.ic_notifications_inactive)
+                btn_notification.setOnClickListener {
+                    onItemClick?.invoke(schedule)
+                }
             }
         }
     }

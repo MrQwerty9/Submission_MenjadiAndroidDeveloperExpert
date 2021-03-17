@@ -44,6 +44,11 @@ class ScheduleContentFragment : Fragment() {
         }
 
         tv_schedule_date.text = getDateName()
+
+        scheduleAdapter.onItemClick = {
+            viewModel.setReminder(it)
+            scheduleAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun observeData() {
